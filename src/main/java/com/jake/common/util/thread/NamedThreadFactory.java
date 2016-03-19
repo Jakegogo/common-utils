@@ -4,8 +4,10 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 带命名的线程组
- * @author Jake
+ * 可命名线程工厂
+ *
+ * @author jake
+ * @date 2014-8-2-下午5:14:10
  */
 public class NamedThreadFactory implements ThreadFactory {
 
@@ -18,9 +20,9 @@ public class NamedThreadFactory implements ThreadFactory {
 		namePrefix = group.getName() + ":" + name;
 	}
 
-	public Thread newThread(Runnable runnable) {
-		Thread thread = new Thread(group, runnable, namePrefix + threadNumber.getAndIncrement(), 0);
-		return thread;
+	public Thread newThread(Runnable r) {
+		return new Thread(group, r, namePrefix
+				+ threadNumber.getAndIncrement(), 0);
 	}
 
 }

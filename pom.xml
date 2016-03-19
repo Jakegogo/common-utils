@@ -14,6 +14,7 @@
         <org.slf4j.version>1.6.1</org.slf4j.version>
         <org.log4j.version>1.2.16</org.log4j.version>
         <spring.version>3.1.2.RELEASE</spring.version>
+        <protostuff.version>1.0.8</protostuff.version>
     </properties>
 
     <dependencies>
@@ -36,7 +37,7 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>${org.slf4j.version}</version>
             <type>jar</type>
-            <scope>runtime</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
@@ -86,6 +87,43 @@
             <groupId>com.jake</groupId>
             <version>2.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.12.1.GA</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-all</artifactId>
+            <version>5.0.3</version>
+        </dependency>
+
+        <!--Protostuff-->
+        <dependency>
+            <groupId>com.dyuproject.protostuff</groupId>
+            <artifactId>protostuff-core</artifactId>
+            <version>${protostuff.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dyuproject.protostuff</groupId>
+            <artifactId>protostuff-api</artifactId>
+            <version>${protostuff.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dyuproject.protostuff</groupId>
+            <artifactId>protostuff-collectionschema</artifactId>
+            <version>${protostuff.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dyuproject.protostuff</groupId>
+            <artifactId>protostuff-runtime</artifactId>
+            <version>${protostuff.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
