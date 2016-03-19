@@ -18,7 +18,7 @@
  */
 package com.jake.common.util.collections.concurrent;
 
-import utils.collections.PriorityQueue;
+import com.jake.common.util.collections.PriorityQueue;
 
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;

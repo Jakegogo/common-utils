@@ -3,8 +3,6 @@
  */
 package com.jake.common.util.profile;
 
-import com.jake.common.schedule.scheduler.ScheduledTask;
-import com.jake.common.schedule.scheduler.Scheduler;
 import com.jake.common.util.console.ConsoleMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +15,8 @@ import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -35,7 +35,7 @@ public class Profiler {
 	@Autowired
 	private ApplicationContext applicationContext;
 	@Autowired
-	private Scheduler scheduler;
+	private ScheduledThreadPoolExecutor scheduler;
 	
 	
 	/**
@@ -86,7 +86,7 @@ public class Profiler {
 		
 		this.close();
 
-		future = scheduler.scheduleWithFixedDelay(new ScheduledTask() {
+		future = scheduler.scheduleWithFixedDelay(new Runnable() {
 			
 			@Override
 			public void run() {
@@ -94,13 +94,8 @@ public class Profiler {
 					profile();
 				}
 			}
-			
-			@Override
-			public String getName() {
-				return "性能分析定时输出";
-			}
-			
-		}, Util.dateAdd(new Date(), 0, 1, 0), 3 * 60 * 1000L);
+
+		}, 1000, 3 * 60 * 1000L, TimeUnit.MILLISECONDS);
 	
 		
 	}

@@ -46,12 +46,12 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.*;
 
-import utils.collections.LinkedDeque;
+import com.jake.common.util.collections.LinkedDeque;
 
 import static com.jake.common.util.collections.concurrent.ConcurrentLinkedHashMap8.QueuePolicy.PER_SEGMENT_Q;
 import static com.jake.common.util.collections.concurrent.ConcurrentLinkedHashMap8.QueuePolicy.PER_SEGMENT_Q_OPTIMIZED_RMV;
 import static com.jake.common.util.collections.concurrent.ConcurrentLinkedHashMap8.QueuePolicy.SINGLE_Q;
-import static utils.collections.concurrent.ConcurrentLinkedHashMap8.QueuePolicy.*;
+import static com.jake.common.util.collections.concurrent.ConcurrentLinkedHashMap8.QueuePolicy.*;
 
 // 从jdk8移植的ConcurrentLinkedHashMap
 

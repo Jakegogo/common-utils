@@ -3,7 +3,6 @@
  */
 package com.jake.common.util.thread;
 
-import com.jake.common.schedule.thread.FixThreadPoolExecutor;
 import com.jake.common.util.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,25 +82,6 @@ public abstract class ThreadUtils {
 		
 		if (executor instanceof ThreadPoolExecutor) {
 			ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) executor;
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("线程池名称" , poolname);
-			
-			map.put("当前队列上排队的任务数量", "(无法获取)");
-			BlockingQueue<?> queue = threadPoolExecutor.getQueue();
-			if (queue != null) {
-				map.put("当前队列上排队的任务数量", queue.size());
-			}
-			
-			map.put("当前池内总的线程数量", threadPoolExecutor.getPoolSize());
-			map.put("当前正在执行任务的线程数", threadPoolExecutor.getActiveCount()); 
-			map.put("历史执行过的任务数量", threadPoolExecutor.getCompletedTaskCount()); 
-			map.put("配置的核心大小", threadPoolExecutor.getCorePoolSize()); 
-			map.put("配置的最大线程数量", threadPoolExecutor.getMaximumPoolSize()); 
-			map.put("历史最大峰值线程数量", threadPoolExecutor.getLargestPoolSize());
-			
-			return JsonUtils.object2PrettyJsonString(map);
-		} else if (executor instanceof FixThreadPoolExecutor) {
-			FixThreadPoolExecutor threadPoolExecutor = (FixThreadPoolExecutor) executor;
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("线程池名称" , poolname);
 			
