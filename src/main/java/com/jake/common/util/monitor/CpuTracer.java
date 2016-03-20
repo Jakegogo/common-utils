@@ -84,9 +84,9 @@ public class CpuTracer extends Tracer {
     /**
      * 输出线程的cpu使用率
      * <li>全局,占全部核的百分比</li>
-     * @param systemUsagePrinter
+     * @param previousPrinter
      */
-    public void printThreadCpuUsage(Thread systemUsagePrinter) throws InterruptedException {
+    public void printThreadCpuUsage(Thread previousPrinter) throws InterruptedException {
 
         final ThreadMXBean bean = ManagementFactory.getThreadMXBean();
         final long[] ids = bean.getAllThreadIds();
@@ -141,7 +141,7 @@ public class CpuTracer extends Tracer {
         }
 
         sleep();
-        systemUsagePrinter.join();
+        previousPrinter.join();
 
         logger.info("##### Every Threads CPU usage statistics in " + TRACE_INTERVAL/1000 + " seconds #####");
         long nanoAfter = System.nanoTime();
