@@ -3,6 +3,7 @@ package com.jake.common.util.asm;
 
 /**
  * 值获取器接口
+ * <li>for jdk6/jdk7</li>
  * @author Jake
  * @date 2014年11月2日下午6:33:26
  */

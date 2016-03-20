@@ -4,7 +4,8 @@
 package com.jake.common.util.profile;
 
 /**
- * 性能分析标的接口
+ * 性能分析接口
+ * <li>可输出性能分析结果的</li>
  * @author Jake
  *
  */

@@ -4,6 +4,8 @@
 package com.jake.common.util.console;
 
 import com.jake.common.util.conversion.ConverterService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -22,12 +24,19 @@ import java.util.concurrent.ConcurrentMap;
 
 
 /**
- * @author fansth
+ * ConsoleMethod的spring实现
+ * @author Jake
  */
 @Component
 public class ConsoleProcessor implements BeanPostProcessor, ApplicationListener<ContextRefreshedEvent>{
-	
+
+	private static final Logger logger = LoggerFactory.getLogger(ConsoleProcessor.class);
+
 	private ConcurrentMap<String, MethodInvoker> method_map = new ConcurrentHashMap<String, MethodInvoker>();
+
+	private static Thread worker;// 单例
+
+	private final static Object mutex = new Object();
 	
 	@Autowired
 	private ConverterService converterService;
@@ -39,7 +48,9 @@ public class ConsoleProcessor implements BeanPostProcessor, ApplicationListener<
 
 	@Override
 	public Object postProcessAfterInitialization(final Object bean, String beanName) throws BeansException {
-		this.applyConsoleProcessorForBean(bean);
+		if (logger.isDebugEnabled()) {
+			this.applyConsoleProcessorForBean(bean);
+		}
 		return bean;
 	}
 	
@@ -92,43 +103,49 @@ public class ConsoleProcessor implements BeanPostProcessor, ApplicationListener<
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				while(true){
-					try {
-						BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-						String line = reader.readLine();
-						String[] array = line.split(" +");
-						String name = array[0];
-						
-						MethodInvoker methodInvoker = method_map.get(name);
-						if(methodInvoker == null){
-							System.out.println("控制台命令  " + name + " 没有注册!");
-							continue;
-						}
-						Method method = methodInvoker.getMethod();
-						
-						Object[] args = null;
-						if(array.length > 1){
-							args = new Object[array.length - 1];
-							for(int i = 1; i < array.length; i++){
-								Object arg = converterService.convert(array[i], method.getParameterTypes()[i-1]);
-								args[i-1] = arg;
+		synchronized (mutex) {
+			if (worker != null) {
+				worker.interrupt();
+			}
+			worker = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					while (!Thread.currentThread().isInterrupted()) {
+						try {
+							BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+							String line = reader.readLine();
+							String[] array = line.split(" +");
+							String name = array[0];
+
+							MethodInvoker methodInvoker = method_map.get(name);
+							if (methodInvoker == null) {
+								System.out.println("控制台命令  " + name + " 没有注册!");
+								continue;
 							}
+							Method method = methodInvoker.getMethod();
+
+							Object[] args = null;
+							if (array.length > 1) {
+								args = new Object[array.length - 1];
+								for (int i = 1; i < array.length; i++) {
+									Object arg = converterService.convert(array[i], method.getParameterTypes()[i - 1]);
+									args[i - 1] = arg;
+								}
+							}
+
+							Object result = methodInvoker.invoke(args);
+							System.out.println(name + " 调用完成, 返回结果:" + (result != null ? result.toString() : "无"));
+
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
-						
-						Object result = methodInvoker.invoke(args);
-						System.out.println(name + " 调用完成, 返回结果:" + (result != null ? result.toString() : "无"));
-						
-					} catch (Exception e) {
-						e.printStackTrace();
 					}
 				}
-			}
-			
-		}, "控制台监听线程").start();
+
+			}, "控制台监听线程");
+			worker.start();
+		}
 	}
 
 

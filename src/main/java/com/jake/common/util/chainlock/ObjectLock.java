@@ -106,23 +106,23 @@ public class ObjectLock extends ReentrantLock implements Comparable<ObjectLock> 
 			return -1;
 		}
 
-		if (this.clz != o.clz) {
-			// 根据类名比较
-			int classNameCompare = this.clz.getName()
-					.compareTo(o.clz.getName());
-			if(classNameCompare != 0) {
-				return classNameCompare;
-			}
-			// 类型不同的排序
-			if (this.clz.hashCode() < o.clz.hashCode()) {
-				return -1;
-			} else if (this.clz.hashCode() > o.clz.hashCode()) {
-				return 1;
-			}
-			return 0;
-		} else {
+		if (this.clz == o.clz) {
 			// 类型相同的处理
 			return this.value.compareTo(o.value);
+
 		}
+		// 根据类名比较
+		int classNameCompare = this.clz.getName()
+				.compareTo(o.clz.getName());
+		if(classNameCompare != 0) {
+			return classNameCompare;
+		}
+		// 类型不同的排序
+		if (this.clz.hashCode() < o.clz.hashCode()) {
+			return -1;
+		} else if (this.clz.hashCode() > o.clz.hashCode()) {
+			return 1;
+		}
+		return 0;
 	}
 }

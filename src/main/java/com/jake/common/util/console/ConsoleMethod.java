@@ -6,8 +6,9 @@ package com.jake.common.util.console;
 import java.lang.annotation.*;
 
 /**
- * @author fansth
- *
+ * <h5>控制台命令注册</h5>
+ * <li>log4j的debug模式下自动启用</li>
+ * @author jake
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

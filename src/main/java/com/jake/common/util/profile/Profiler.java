@@ -12,7 +12,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -20,15 +19,18 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * 性能分析者
+ * <h3>性能分析者</h3>
+ * <li>(使用Spring的@PostConstruct自动启动)</li>
  * @author Jake
- *
  */
 @Component
 public class Profiler {
 
 	private static final Logger logger = LoggerFactory.getLogger("PROFILE");
-	
+
+	/** 定时输出性能日志.时间间隔 */
+	public static final long PROFILE_DELAY = 3 * 60 * 1000L;
+
 	private final Logger commonLogger = LoggerFactory.getLogger(this.getClass());
 	
 	
@@ -95,9 +97,8 @@ public class Profiler {
 				}
 			}
 
-		}, 1000, 3 * 60 * 1000L, TimeUnit.MILLISECONDS);
+		}, 1000, PROFILE_DELAY, TimeUnit.MILLISECONDS);
 	
-		
 	}
 	
 	

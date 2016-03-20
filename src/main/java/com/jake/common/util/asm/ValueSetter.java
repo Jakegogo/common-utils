@@ -2,6 +2,7 @@ package com.jake.common.util.asm;
 
 /**
  * 属性值设置器
+ * <li>for jdk6/jdk7</li>
  * Created by Jake on 2015/1/1.
  */
 public interface ValueSetter<T> {

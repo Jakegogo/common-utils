@@ -89,7 +89,7 @@ public class AsmUtils implements Opcodes {
 	 * object类本身的方法不做重写
 	 * </p>
 	 * <p>
-	 * "main" 方法不做重写
+	 * "run" 方法不做重写
 	 * </p>
 	 *
 	 * @param m
@@ -105,11 +105,11 @@ public class AsmUtils implements Opcodes {
 		if (m.isSynthetic()) {
 			return false;
 		}
-		// "main" 方法不做重写
+		// "run" 方法不做重写
 		return !(Modifier.isPublic(m.getModifiers())
 				&& Modifier.isStatic(m.getModifiers())
 				&& m.getReturnType().getName().equals("void")
-				&& m.getName().equals("main"));
+				&& m.getName().equals("run"));
 	}
 
 
