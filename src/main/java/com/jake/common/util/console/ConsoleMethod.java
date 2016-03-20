@@ -18,4 +18,6 @@ public @interface ConsoleMethod {
 	String name();
 	
 	String description() default "";
+
+	int level() default ConsoleLevel.USER_LEVEL;
 }

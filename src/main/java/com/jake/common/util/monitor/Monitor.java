@@ -1,5 +1,6 @@
 package com.jake.common.util.monitor;
 
+import com.jake.common.util.console.ConsoleLevel;
 import com.jake.common.util.console.ConsoleMethod;
 import com.jake.common.util.profile.Profileable;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,7 @@ public class Monitor implements Profileable {
     /**
      * 输出内存监控日志
      */
-    @ConsoleMethod(name="monitorMemory", description = "输出内存监控日志")
+    @ConsoleMethod(name="monitorMemory", description = "输出内存监控日志", level = ConsoleLevel.SYSTEM_LEVEL)
     public void monitorMemory() {
         new MemoryTracer().run();
     }
@@ -24,7 +25,7 @@ public class Monitor implements Profileable {
     /**
      * 输出GC监控日志
      */
-    @ConsoleMethod(name="monitorGC", description = "输出GC监控日志")
+    @ConsoleMethod(name="monitorGC", description = "输出GC监控日志", level = ConsoleLevel.SYSTEM_LEVEL)
     public void monitorGC() {
         new GCTracer().run();
     }
@@ -32,7 +33,7 @@ public class Monitor implements Profileable {
     /**
      * 输出Cpu监控日志
      */
-    @ConsoleMethod(name="monitorCpu", description = "输出Cpu监控日志")
+    @ConsoleMethod(name="monitorCpu", description = "输出Cpu监控日志", level = ConsoleLevel.SYSTEM_LEVEL)
     public void monitorCpu() {
         try {
             new CpuTracer().run();
@@ -46,7 +47,7 @@ public class Monitor implements Profileable {
     /**
      * 输出全部监控日志
      */
-    @ConsoleMethod(name="monitorAll", description = "输出全部监控日志")
+    @ConsoleMethod(name="monitorAll", description = "输出全部监控日志", level = ConsoleLevel.SYSTEM_LEVEL)
     public void monitorAll() {
         monitorMemory();
         monitorGC();

@@ -3,6 +3,7 @@
  */
 package com.jake.common.util.profile;
 
+import com.jake.common.util.console.ConsoleLevel;
 import com.jake.common.util.console.ConsoleMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -114,7 +115,7 @@ public class Profiler {
 		}
 	}
 	
-	@ConsoleMethod(name = "profile", description = "性能分析输出")
+	@ConsoleMethod(name = "profile", description = "性能分析输出", level = ConsoleLevel.SYSTEM_LEVEL)
 	private void profile(){
 		Map<String, Profileable> beanMap = applicationContext.getBeansOfType(Profileable.class);
 		for(Profileable profileable : beanMap.values()){

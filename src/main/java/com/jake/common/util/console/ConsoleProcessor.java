@@ -48,9 +48,7 @@ public class ConsoleProcessor implements BeanPostProcessor, ApplicationListener<
 
 	@Override
 	public Object postProcessAfterInitialization(final Object bean, String beanName) throws BeansException {
-		if (logger.isDebugEnabled()) {
-			this.applyConsoleProcessorForBean(bean);
-		}
+		this.applyConsoleProcessorForBean(bean);
 		return bean;
 	}
 	
@@ -80,6 +78,12 @@ public class ConsoleProcessor implements BeanPostProcessor, ApplicationListener<
 			MethodInvoker methodInvoker = entry.getValue();
 			Method method = methodInvoker.getMethod();
 			ConsoleMethod consoleMethod = method.getAnnotation(ConsoleMethod.class);
+
+			if (consoleMethod.level() > ConsoleLevel.SYSTEM_LEVEL &&
+					!logger.isDebugEnabled()) {
+				continue;
+			}
+
 			builder.append(consoleMethod.name()).append("  :  ").append(consoleMethod.description()).append("\r\n");
 			builder.append("函数原型").append("  :  ").append(methodInvoker.getTarget().getClass().getSimpleName()).append("#")
 													  .append(methodInvoker.getMethod().getName()).append("(");
