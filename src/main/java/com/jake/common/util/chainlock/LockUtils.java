@@ -22,9 +22,9 @@ public class LockUtils {
 	 * @return 可同时锁定参数对象的锁对象
 	 * @throws IllegalArgumentException 对象数量为0时抛出
 	 */
-	public static ChainLock getLock(Object...objects) {
+	public static LockSequence getLock(Object...objects) {
 		List<? extends Lock> locks = loadLocks(objects);
-		return new ChainLock(locks);
+		return new LockSequence(locks);
 	}
 
 	/**

@@ -4,28 +4,28 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 
 /**
- * 锁链
+ * 锁序列
  * @author jake
  */
-public class ChainLock {
+class LockSequence {
 	
 	/** 当前的锁 */
 	private final Lock current;
 	/** 下一个锁节点 */
-	private final ChainLock next;
+	private final LockSequence next;
 	
 	/**
 	 * 根据给出的有序锁集合，创建一个锁链对象
 	 * @param locks
 	 * @throws IllegalArgumentException 锁对象数量为0时抛出
 	 */
-	public ChainLock(List<? extends Lock> locks) {
+	public LockSequence(List<? extends Lock> locks) {
 		if (locks == null || locks.size() == 0) {
 			throw new IllegalArgumentException("构建锁链的锁数量不能为0");
 		}
 		this.current = locks.remove(0);
 		if (locks.size() > 0) {
-			this.next = new ChainLock(locks);
+			this.next = new LockSequence(locks);
 		} else {
 			this.next = null;
 		}

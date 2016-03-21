@@ -19,7 +19,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author jake
  */
 @SuppressWarnings({"rawtypes", "unchecked", "unused"})
-public class ObjectLock extends ReentrantLock implements Comparable<ObjectLock> {
+class ObjectLock extends ReentrantLock implements Comparable<ObjectLock> {
 
 	private static final long serialVersionUID = -1738309259140428174L;
 

@@ -14,6 +14,16 @@ import java.util.Random;
 /**
  * 监控输出器接口
  * Created by Jake on 3/20 0020.
+ *
+ * Goals:
+ * 1.GcUtils
+ * 2.dead lock log和stackTrace
+ * 3.高cpu线程log和stackTrace
+ * 4.助于吞吐率分析方向
+ * 5.助于降低延迟分析方向
+ * 6.提供web使用的接口
+ * 7.提供可检索和统计分析的日志
+ *
  */
 public abstract class Tracer {
 
