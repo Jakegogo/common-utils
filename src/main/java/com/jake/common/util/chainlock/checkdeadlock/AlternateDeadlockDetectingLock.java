@@ -9,6 +9,7 @@ ISBN: 0-596-00782-5
 
 
 import com.jake.common.util.chainlock.ObjectLock;
+import com.jake.common.util.chainlock.ReentrantLock;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,7 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
 
 // This is a very slow implementation of a ReentrantLock class and is not for
 //   everyday usage. The purpose of this class is to test for deadlocks. The

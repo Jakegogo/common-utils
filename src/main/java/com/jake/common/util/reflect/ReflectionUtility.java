@@ -5,6 +5,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
@@ -180,4 +183,21 @@ public abstract class ReflectionUtility extends ReflectionUtils {
 			throw new IllegalStateException(message.getMessage(), e);
 		}
 	}
+
+	/**
+	 * 发射执行方法获取值
+	 * @param object 目标对象
+	 * @param methodName 方法名
+	 * @return
+	 */
+	public static Object readMethodValue(Object object, String methodName) {
+		try {
+			Method method = object.getClass().getDeclaredMethod(methodName);
+			method.setAccessible(true);
+			return method.invoke(object);
+		} catch (Exception e2) {
+		}
+		return null;
+	}
+
 }

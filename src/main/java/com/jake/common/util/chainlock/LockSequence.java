@@ -1,13 +1,15 @@
 package com.jake.common.util.chainlock;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
 /**
  * 锁序列
  * @author jake
  */
-class LockSequence {
+class LockSequence implements Lock {
 	
 	/** 当前的锁 */
 	private final Lock current;
@@ -23,10 +25,11 @@ class LockSequence {
 		if (locks == null || locks.size() == 0) {
 			throw new IllegalArgumentException("构建锁链的锁数量不能为0");
 		}
-		this.current = locks.remove(0);
-		if (locks.size() > 0) {
+		if (locks.size() > 1) {
+			this.current = locks.remove(0);
 			this.next = new LockSequence(locks);
 		} else {
+			this.current = locks.get(0);
 			this.next = null;
 		}
 	}
@@ -34,6 +37,7 @@ class LockSequence {
 	/**
 	 * 对锁链中的多个锁对象，按顺序逐个加锁
 	 */
+	@Override
 	public void lock() {
 		current.lock();
 		if (next != null) {
@@ -44,11 +48,32 @@ class LockSequence {
 	/**
 	 * 多锁链中的多个锁对象，逐个按顺序解锁
 	 */
+	@Override
 	public void unlock() {
 		if (next != null) {
 			next.unlock();
 		}
 		current.unlock();
+	}
+
+	@Override
+	public Condition newCondition() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void lockInterruptibly() throws InterruptedException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean tryLock() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
+		throw new UnsupportedOperationException();
 	}
 
 }

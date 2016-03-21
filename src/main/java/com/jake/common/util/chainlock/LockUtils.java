@@ -22,7 +22,7 @@ public class LockUtils {
 	 * @return 可同时锁定参数对象的锁对象
 	 * @throws IllegalArgumentException 对象数量为0时抛出
 	 */
-	public static LockSequence getLock(Object...objects) {
+	public static Lock getLock(Object...objects) {
 		List<? extends Lock> locks = loadLocks(objects);
 		return new LockSequence(locks);
 	}
@@ -92,5 +92,14 @@ public class LockUtils {
 	public static String getLockObjectCount() {
 		return holder.getClassInstanceCount();
 	}
-	
+
+	/**
+	 * 获取锁住的对象
+	 * @param identityHashCode hashCode
+	 * @return
+	 */
+	public static Object getLockObject(int identityHashCode) {
+		return holder.getLockObject(identityHashCode);
+	}
+
 }

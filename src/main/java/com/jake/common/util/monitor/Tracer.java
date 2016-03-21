@@ -1,6 +1,7 @@
 package com.jake.common.util.monitor;
 
 import com.jake.common.util.StringUtils;
+import com.jake.common.util.chainlock.LockUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -10,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 监控输出器接口
@@ -77,4 +81,107 @@ public abstract class Tracer {
             Collections.sort(list);
         }
     }
+
+    // for test
+    protected void testDeadLock() {
+        final ReentrantLock lock1 = new ReentrantLock();
+        final ReentrantLock lock2 = new ReentrantLock();
+
+        Thread thread1 = new Thread(new Runnable() {
+            @Override public void run() {
+                try {
+                    lock1.lock();
+                    System.out.println("Thread1 acquired lock1");
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(50);
+                    } catch (InterruptedException ignore) {}
+                    lock2.lock();
+                    System.out.println("Thread1 acquired lock2");
+                }
+                finally {
+                    lock2.unlock();
+                    lock1.unlock();
+                }
+            }
+        });
+        thread1.start();
+
+        Thread thread2 = new Thread(new Runnable() {
+            @Override public void run() {
+                try {
+                    lock2.lock();
+                    System.out.println("Thread2 acquired lock2");
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(50);
+                    } catch (InterruptedException ignore) {}
+                    lock1.lock();
+                    System.out.println("Thread2 acquired lock1");
+                }
+                finally {
+                    lock1.unlock();
+                    lock2.unlock();
+                }
+            }
+        });
+        thread2.start();
+
+        // Wait a little for threads to deadlock.
+        try {
+            TimeUnit.MILLISECONDS.sleep(100);
+        } catch (InterruptedException ignore) {}
+    }
+
+
+    // for test
+    protected void testDeadLock1() {
+        final Object metex1 = new Object();
+        final Object metex2 = new Object();
+
+        final Lock lock1 = LockUtils.getLock(metex1);
+        final Lock lock2 = LockUtils.getLock(metex2);
+
+        Thread thread1 = new Thread(new Runnable() {
+            @Override public void run() {
+                try {
+                    lock1.lock();
+                    System.out.println("Thread1 acquired lock1");
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(50);
+                    } catch (InterruptedException ignore) {}
+                    lock2.lock();
+                    System.out.println("Thread1 acquired lock2");
+                }
+                finally {
+                    lock2.unlock();
+                    lock1.unlock();
+                }
+            }
+        });
+        thread1.start();
+
+        Thread thread2 = new Thread(new Runnable() {
+            @Override public void run() {
+                try {
+                    lock2.lock();
+                    System.out.println("Thread2 acquired lock2");
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(50);
+                    } catch (InterruptedException ignore) {}
+                    lock1.lock();
+                    System.out.println("Thread2 acquired lock1");
+                }
+                finally {
+                    lock1.unlock();
+                    lock2.unlock();
+                }
+            }
+        });
+        thread2.start();
+
+        // Wait a little for threads to deadlock.
+        try {
+            TimeUnit.MILLISECONDS.sleep(100);
+        } catch (InterruptedException ignore) {}
+    }
+
 }

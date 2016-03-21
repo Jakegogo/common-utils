@@ -21,7 +21,7 @@ import java.util.concurrent.locks.ReentrantLock;
 class ObjectLockHolder {
 
 	private static final Logger log = LoggerFactory.getLogger(ObjectLockHolder.class);
-	
+
 	/**
 	 * 单一类的锁持有者
 	 * @author frank
@@ -93,6 +93,20 @@ class ObjectLockHolder {
 		public int count() {
 			return locks.size();
 		}
+
+		/**
+		 * 获取锁住的对象
+		 * @param identityHashCode hashCode
+		 * @return
+		 */
+		public Object getLockObject(int identityHashCode) {
+			for (ObjectLock lock : locks.values()) {
+				if (System.identityHashCode(lock.getSync()) == identityHashCode) {
+					return lock.getObject();
+				}
+			}
+			return null;
+		}
 	}
 
 	/** 持有者集合 */
@@ -160,5 +174,21 @@ class ObjectLockHolder {
 		}
 		
 		return JsonUtils.object2JsonString(map);
+	}
+
+	/**
+	 * 获取锁住的对象
+	 * @param identityHashCode hashCode
+	 * @return
+	 */
+	public Object getLockObject(int identityHashCode) {
+		Object object;
+		for (Holder holder: holders.values()) {
+			object = holder.getLockObject(identityHashCode);
+			if (object != null) {
+				return object;
+			}
+		}
+		return null;
 	}
 }

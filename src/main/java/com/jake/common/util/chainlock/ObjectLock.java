@@ -3,8 +3,6 @@ package com.jake.common.util.chainlock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.locks.ReentrantLock;
-
 /**
  * 对象锁对象<br/>
  * <pre>
@@ -19,7 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author jake
  */
 @SuppressWarnings({"rawtypes", "unchecked", "unused"})
-class ObjectLock extends ReentrantLock implements Comparable<ObjectLock> {
+public class ObjectLock extends ReentrantLock implements Comparable<ObjectLock> {
 
 	private static final long serialVersionUID = -1738309259140428174L;
 
@@ -30,7 +28,9 @@ class ObjectLock extends ReentrantLock implements Comparable<ObjectLock> {
 	/** 锁定对象的类型 */
 	private final Class clz;
 	/** 锁的排序依据 */
-	private final Comparable value;
+	private final Object object;
+	/** 对象唯一码 */
+	private final Comparable objectIndentity;
 	/** 该对象锁所锁定的是否实体 */
 	private final boolean isEntity;
 
@@ -51,10 +51,11 @@ class ObjectLock extends ReentrantLock implements Comparable<ObjectLock> {
 		super(fair);
 		clz = object.getClass();
 		if (object instanceof IEntity) {
-			value = ((IEntity) object).getIdentity();
+			this.objectIndentity = ((IEntity) object).getIdentity();
 		} else {
-			value = System.identityHashCode(object);
+			this.objectIndentity = System.identityHashCode(object);
 		}
+		this.object = object;
 		isEntity = IENTITY_CLASS.isAssignableFrom(clz);
 	}
 
@@ -64,7 +65,7 @@ class ObjectLock extends ReentrantLock implements Comparable<ObjectLock> {
 	 * @return 当返回 true，表示这两个锁的进入次序无法预知
 	 */
 	public boolean isTie(ObjectLock other) {
-		return this.clz == other.clz && this.value.compareTo(other.value) == 0;
+		return this.clz == other.clz && this.objectIndentity.compareTo(other.objectIndentity) == 0;
 	}
 
 	// Getter ...
@@ -81,8 +82,8 @@ class ObjectLock extends ReentrantLock implements Comparable<ObjectLock> {
 	 * 获取排序依据
 	 * @return
 	 */
-	public Comparable getValue() {
-		return value;
+	public Object getObject() {
+		return object;
 	}
 
 	/**
@@ -108,7 +109,7 @@ class ObjectLock extends ReentrantLock implements Comparable<ObjectLock> {
 
 		if (this.clz == o.clz) {
 			// 类型相同的处理
-			return this.value.compareTo(o.value);
+			return this.objectIndentity.compareTo(o.objectIndentity);
 
 		}
 		// 根据类名比较
