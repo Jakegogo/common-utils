@@ -1,4 +1,4 @@
-package com.jake.common.util.chainlock;
+package com.jake.common.util.sequencelock;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;

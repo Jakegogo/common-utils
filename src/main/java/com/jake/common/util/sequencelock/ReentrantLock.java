@@ -8,7 +8,7 @@
  * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
-package com.jake.common.util.chainlock;
+package com.jake.common.util.sequencelock;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;

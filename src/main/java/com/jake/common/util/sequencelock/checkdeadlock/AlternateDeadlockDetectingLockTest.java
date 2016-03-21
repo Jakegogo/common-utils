@@ -1,4 +1,4 @@
-package com.jake.common.util.chainlock.checkdeadlock;
+package com.jake.common.util.sequencelock.checkdeadlock;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;

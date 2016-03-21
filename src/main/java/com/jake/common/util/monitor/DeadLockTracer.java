@@ -1,7 +1,7 @@
 package com.jake.common.util.monitor;
 
 import com.jake.common.util.JsonUtils;
-import com.jake.common.util.chainlock.LockUtils;
+import com.jake.common.util.sequencelock.LockUtils;
 import com.jake.common.util.thread.ThreadUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

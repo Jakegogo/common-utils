@@ -1,7 +1,7 @@
-package com.jake.common.util.chainlock;
+package com.jake.common.util.sequencelock;
 
 import com.jake.common.util.JsonUtils;
-import com.jake.common.util.chainlock.checkdeadlock.AlternateDeadlockDetectingLock;
+import com.jake.common.util.sequencelock.checkdeadlock.AlternateDeadlockDetectingLock;
 import com.jake.common.util.collections.concurrent.ConcurrentWeakHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

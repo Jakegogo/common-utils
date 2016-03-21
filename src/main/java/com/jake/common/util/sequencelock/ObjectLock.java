@@ -1,4 +1,4 @@
-package com.jake.common.util.chainlock;
+package com.jake.common.util.sequencelock;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

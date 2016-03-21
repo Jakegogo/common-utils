@@ -32,7 +32,7 @@ import java.util.*;
  */
 public class ReflectUtils {
     private ReflectUtils() { }
-    
+
     private static final Map primitives = new HashMap(8);
     private static final Map transforms = new HashMap(8);
     private static final ClassLoader defaultLoader = ReflectUtils.class.getClassLoader();

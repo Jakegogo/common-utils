@@ -1,4 +1,4 @@
-package com.jake.common.util.chainlock.checkdeadlock;
+package com.jake.common.util.sequencelock.checkdeadlock;
 /*
 Java Threads, 3rd Edition
 By Scott Oaks, Henry Wong
@@ -8,8 +8,8 @@ ISBN: 0-596-00782-5
 */
 
 
-import com.jake.common.util.chainlock.ObjectLock;
-import com.jake.common.util.chainlock.ReentrantLock;
+import com.jake.common.util.sequencelock.ObjectLock;
+import com.jake.common.util.sequencelock.ReentrantLock;
 
 import java.util.ArrayList;
 import java.util.Date;

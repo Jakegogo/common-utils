@@ -1,4 +1,4 @@
-package com.jake.common.util.chainlock;
+package com.jake.common.util.sequencelock;
 
 import java.util.ArrayList;
 import java.util.Collections;

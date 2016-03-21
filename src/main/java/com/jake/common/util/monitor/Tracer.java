@@ -1,7 +1,7 @@
 package com.jake.common.util.monitor;
 
 import com.jake.common.util.StringUtils;
-import com.jake.common.util.chainlock.LockUtils;
+import com.jake.common.util.sequencelock.LockUtils;
 import org.slf4j.Logger;
 
 import java.io.IOException;

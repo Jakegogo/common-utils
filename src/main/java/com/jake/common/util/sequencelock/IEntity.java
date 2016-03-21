@@ -1,4 +1,4 @@
-package com.jake.common.util.chainlock;
+package com.jake.common.util.sequencelock;
 
 /**
  * 实体标识接口，用于告知锁创建器具体类实例是实体对象
