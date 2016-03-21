@@ -27,7 +27,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * 5.助于降低延迟分析方向
  * 6.提供web使用的接口
  * 7.提供可检索和统计分析的日志
- *
+ * 8.可配置的,如配置property提供设置项
  */
 public abstract class Tracer {
 

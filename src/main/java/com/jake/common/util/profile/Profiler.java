@@ -37,7 +37,7 @@ public class Profiler {
 	
 	@Autowired
 	private ApplicationContext applicationContext;
-	@Autowired
+
 	private ScheduledThreadPoolExecutor scheduler;
 	
 	
@@ -59,8 +59,8 @@ public class Profiler {
 
 	/**
 	 * 输出日志
-	 * @param format
-	 * @param infos
+	 * @param message
+	 * @param items
 	 */
 	public static void trace(String message, Object...items){
 		if(logger.isInfoEnabled()){
@@ -70,8 +70,8 @@ public class Profiler {
 	
 	/**
 	 * 输出错误
-	 * @param format
-	 * @param infos
+	 * @param message
+	 * @param e
 	 */
 	public static void error(String message, Exception e){
 		if(logger.isErrorEnabled()){
