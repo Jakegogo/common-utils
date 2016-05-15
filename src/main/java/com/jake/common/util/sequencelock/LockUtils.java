@@ -24,7 +24,7 @@ public class LockUtils {
 	 */
 	public static Lock getLock(Object...objects) {
 		List<? extends Lock> locks = loadLocks(objects);
-		return new LockSequence(locks);
+		return new SequenceLock(locks);
 	}
 
 	/**
