@@ -32,8 +32,6 @@
 
 package com.jake.common.util.collections.concurrent;
 
-import com.jake.common.util.collections.concurrent.ConcurrentLinkedHashMap.Node.State;
-
 import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
