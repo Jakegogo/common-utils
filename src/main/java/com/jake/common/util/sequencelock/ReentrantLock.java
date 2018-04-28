@@ -1,14 +1,11 @@
 /*
+ * %W% %E%
+ *
+ * Copyright (c) 2006, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-/*
- * Written by Doug Lea with assistance from members of JCP JSR-166
- * Expert Group and released to the public domain, as explained at
- * http://creativecommons.org/publicdomain/zero/1.0/
- */
-
-package com.jake.common.util.sequencelock;
+package com.concur.unity.sequencelock;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
@@ -93,7 +90,7 @@ public class ReentrantLock implements Lock, java.io.Serializable {
      * into fair and nonfair versions below. Uses AQS state to
      * represent the number of holds on the lock.
      */
-    abstract static class Sync extends AbstractQueuedSynchronizer {
+    static abstract class Sync extends AbstractQueuedSynchronizer {
         private static final long serialVersionUID = -5179523762034025860L;
 
         /**
@@ -168,7 +165,7 @@ public class ReentrantLock implements Lock, java.io.Serializable {
          * @param s the stream
          */
         private void readObject(java.io.ObjectInputStream s)
-            throws java.io.IOException, ClassNotFoundException {
+                throws java.io.IOException, ClassNotFoundException {
             s.defaultReadObject();
             setState(0); // reset to unlocked state
         }
@@ -177,7 +174,7 @@ public class ReentrantLock implements Lock, java.io.Serializable {
     /**
      * Sync object for non-fair locks
      */
-    static final class NonfairSync extends Sync {
+    final static class NonfairSync extends Sync {
         private static final long serialVersionUID = 7316153563782823691L;
 
         /**
@@ -197,56 +194,11 @@ public class ReentrantLock implements Lock, java.io.Serializable {
     }
 
     /**
-     * Sync object for fair locks
-     */
-    static final class FairSync extends Sync {
-        private static final long serialVersionUID = -3000897897090466540L;
-
-        final void lock() {
-            acquire(1);
-        }
-
-        /**
-         * Fair version of tryAcquire.  Don't grant access unless
-         * recursive call or no waiters or is first.
-         */
-        protected final boolean tryAcquire(int acquires) {
-            final Thread current = Thread.currentThread();
-            int c = getState();
-            if (c == 0) {
-                if (!hasQueuedPredecessors() &&
-                    compareAndSetState(0, acquires)) {
-                    setExclusiveOwnerThread(current);
-                    return true;
-                }
-            }
-            else if (current == getExclusiveOwnerThread()) {
-                int nextc = c + acquires;
-                if (nextc < 0)
-                    throw new Error("Maximum lock count exceeded");
-                setState(nextc);
-                return true;
-            }
-            return false;
-        }
-    }
-
-    /**
      * Creates an instance of {@code ReentrantLock}.
      * This is equivalent to using {@code ReentrantLock(false)}.
      */
     public ReentrantLock() {
         sync = new NonfairSync();
-    }
-
-    /**
-     * Creates an instance of {@code ReentrantLock} with the
-     * given fairness policy.
-     *
-     * @param fair {@code true} if this lock should use a fair ordering policy
-     */
-    public ReentrantLock(boolean fair) {
-        sync = fair ? new FairSync() : new NonfairSync();
     }
 
     /**
@@ -417,8 +369,7 @@ public class ReentrantLock implements Lock, java.io.Serializable {
      * @throws NullPointerException if the time unit is null
      *
      */
-    public boolean tryLock(long timeout, TimeUnit unit)
-            throws InterruptedException {
+    public boolean tryLock(long timeout, TimeUnit unit) throws InterruptedException {
         return sync.tryAcquireNanos(1, unit.toNanos(timeout));
     }
 
@@ -579,7 +530,7 @@ public class ReentrantLock implements Lock, java.io.Serializable {
      * @return {@code true} if this lock has fairness set true
      */
     public final boolean isFair() {
-        return sync instanceof FairSync;
+        return false;
     }
 
     /**
@@ -741,13 +692,12 @@ public class ReentrantLock implements Lock, java.io.Serializable {
     public String toString() {
         Thread o = sync.getOwner();
         return super.toString() + ((o == null) ?
-                                   "[Unlocked]" :
-                                   "[Locked by thread " + o.getName() + "]");
+                "[Unlocked]" :
+                "[Locked by thread " + o.getName() + "]");
     }
 
     // 获取Sync
     public Sync getSync() {
         return sync;
     }
-
 }

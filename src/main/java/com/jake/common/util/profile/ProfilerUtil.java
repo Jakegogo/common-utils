@@ -1,7 +1,9 @@
+package com.concur.unity.profile;
 
+
+import com.jake.common.util.StringUtils;
 
 import java.text.MessageFormat;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -42,7 +44,7 @@ public final class ProfilerUtil {
 
     /**
      * 清除计时器。
-     * 
+     *
      * <p>
      * 清除以后必须再次调用<code>start</code>方可重新计时。
      * </p>
@@ -137,7 +139,7 @@ public final class ProfilerUtil {
         if (entry != null) {
             return entry.toString(prefix1, prefix2);
         } else {
-            return StringUtil.EMPTY_STRING;
+            return StringUtils.EMPTY_STRING;
         }
     }
 
@@ -192,9 +194,9 @@ public final class ProfilerUtil {
             this.message     = message;
             this.startTime   = System.currentTimeMillis();
             this.parentEntry = parentEntry;
-            this.firstEntry  = (Entry) ObjectUtil.defaultIfNull(firstEntry, this);
+            this.firstEntry  = firstEntry != null ? firstEntry: this;
             this.baseTime    = (firstEntry == null) ? 0
-                                                    : firstEntry.startTime;
+                    : firstEntry.startTime;
         }
 
         /**
@@ -220,7 +222,7 @@ public final class ProfilerUtil {
                 }
             }
 
-            return StringUtil.defaultIfEmpty(messageString, null);
+            return StringUtils.isEmpty(messageString) ? "" : messageString;
         }
 
         /**
@@ -230,7 +232,7 @@ public final class ProfilerUtil {
          */
         public long getStartTime() {
             return (baseTime > 0) ? (startTime - baseTime)
-                                  : 0;
+                    : 0;
         }
 
         /**
@@ -386,6 +388,7 @@ public final class ProfilerUtil {
          *
          * @return 字符串表示的entry
          */
+        @Override
         public String toString() {
             return toString("", "");
         }
@@ -424,13 +427,13 @@ public final class ProfilerUtil {
             double   percentOfAll   = getPecentageOfAll();
 
             Object[] params = new Object[] {
-                                  message, // {0} - entry信息 
-            new Long(startTime), // {1} - 起始时间
-            new Long(duration), // {2} - 持续总时间
-            new Long(durationOfSelf), // {3} - 自身消耗的时间
-            new Double(percent), // {4} - 在父entry中所占的时间比例
-            new Double(percentOfAll) // {5} - 在总时间中所旧的时间比例
-                              };
+                    message, // {0} - entry信息
+                    new Long(startTime), // {1} - 起始时间
+                    new Long(duration), // {2} - 持续总时间
+                    new Long(durationOfSelf), // {3} - 自身消耗的时间
+                    new Double(percent), // {4} - 在父entry中所占的时间比例
+                    new Double(percentOfAll) // {5} - 在总时间中所旧的时间比例
+            };
 
             StringBuffer pattern = new StringBuffer("{1,number} ");
 
@@ -479,11 +482,11 @@ public final class ProfilerUtil {
     /**
      * 显示消息的级别。
      */
-    public static final class MessageLevel extends IntegerEnum {
-        private static final long        serialVersionUID = 3257849896026388537L;
-        public static final MessageLevel NO_MESSAGE       = (MessageLevel) create();
-        public static final MessageLevel BRIEF_MESSAGE    = (MessageLevel) create();
-        public static final MessageLevel DETAILED_MESSAGE = (MessageLevel) create();
+    public enum  MessageLevel {
+
+        NO_MESSAGE,
+        BRIEF_MESSAGE,
+        DETAILED_MESSAGE;
     }
 
     /**
